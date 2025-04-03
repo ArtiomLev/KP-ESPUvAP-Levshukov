@@ -42,35 +42,6 @@ void setup() {
 
 void loop() {
 
-    static unsigned long tmr1;
-    if (millis() - tmr1 >= 1000) {
-        tmr1 = millis();
-        if (color == colors::GREEN) {
-            color = colors::YELLOW;
-            digitalWrite(RED_LED_PIN, 0);
-            digitalWrite(YELLOW_LED_PIN, 1);
-            digitalWrite(GREEN_LED_PIN, 0);
-        } else if (color == colors::YELLOW) {
-            color = colors::RED;
-            digitalWrite(RED_LED_PIN, 1);
-            digitalWrite(YELLOW_LED_PIN, 0);
-            digitalWrite(GREEN_LED_PIN, 0);
-        } else if (color == colors::RED) {
-            color = colors::GREEN;
-            digitalWrite(RED_LED_PIN, 0);
-            digitalWrite(YELLOW_LED_PIN, 0);
-            digitalWrite(GREEN_LED_PIN, 1);
-        }
-    }
-
-    static bool blinkFlag;
-    static unsigned long tmr2;
-    if (millis() - tmr2 >= 100) {
-        tmr2 = millis();
-        blinkFlag = !blinkFlag;
-        digitalWrite(LED_BUILTIN, blinkFlag);
-    }
-
     static unsigned long tmr3;
     if (millis() - tmr3 >= 1000) {
         tmr3 = millis();

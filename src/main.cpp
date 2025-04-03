@@ -42,9 +42,9 @@ void setup() {
 
 void loop() {
 
-    static unsigned long tmr3;
-    if (millis() - tmr3 >= 1000) {
-        tmr3 = millis();
+    static unsigned long serial_log_tmr;
+    if (millis() - serial_log_tmr >= 1000) {
+        serial_log_tmr = millis();
         Serial.println("==============================");
         Serial.print("Temperature: "); Serial.println(bme.readTemperature());
         Serial.print("Humidity: "); Serial.println(bme.readHumidity());

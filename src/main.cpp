@@ -122,6 +122,7 @@ void setup() {
     /* Функции инициализации */
 
     Serial.begin(115200);
+    Serial.println("Start!\n");
     bme.begin();
 
     // Инициализация датчика MQ-4
@@ -134,9 +135,6 @@ void setup() {
     MQ7.setA(99.042);
     MQ7.setB(-1.518);
     MQ7.init();
-
-    // Приветственный лог
-    Serial.println("Start!");
 
     /* Сигнал при включении */
 

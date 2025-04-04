@@ -102,6 +102,7 @@ enum class Reaction {
 sensors_values get_values();
 Reaction get_reaction(sensors_values values);
 void update_indicators(Reaction reaction);
+void sensors_serial_log(sensors_values values);
 
 /* ========== Определение функций ========= */
 
@@ -153,19 +154,26 @@ void loop() {
     static unsigned long serial_log_tmr;
     if (millis() - serial_log_tmr >= 1000) {
         serial_log_tmr = millis();
-        Serial.println("==============================");
-        Serial.print("Temperature: "); Serial.println(bme.readTemperature());
-        Serial.print("Humidity: "); Serial.println(bme.readHumidity());
-        Serial.println("==============================");
-        Serial.print("CO: "); Serial.println(analogRead(CO_SENSOR_PIN));
-        Serial.print("GAS: ");  Serial.println(analogRead(GAS_SENSOR_PIN));
-        Serial.println("==============================");
-        Serial.print("Light: "); Serial.println(analogRead(LIGHT_SENSOR_PIN));
-        Serial.println("==============================");
-        Serial.println("");
+        sensors_serial_log(measured_values);
     }
 
+}
 
+/**
+ * Вывод в Serial значений с датчиков
+ * @param values
+ */
+void sensors_serial_log(sensors_values values) {
+        Serial.println("==============================");
+        Serial.print("Temperature: "); Serial.println(values.temp);
+        Serial.print("Humidity: "); Serial.println(values.hum);
+        Serial.println("==============================");
+        Serial.print("CO: "); Serial.println(values.CO);
+        Serial.print("GAS: ");  Serial.println(values.gas);
+        Serial.println("==============================");
+        Serial.print("Light: "); Serial.println(values.light);
+        Serial.println("==============================");
+        Serial.println("");
 }
 
 /**

@@ -57,6 +57,8 @@
 /* === Инициализация объектов библиотек === */
 
 GyverBME280 bme;
+MQUnifiedsensor MQ5("Arduino Nano", 5, 10, GAS_SENSOR_PIN, "MQ-5");
+MQUnifiedsensor MQ7("Arduino Nano", 5, 10, CO_SENSOR_PIN, "MQ-7");
 
 /* === Инициализация объектов библиотек === */
 

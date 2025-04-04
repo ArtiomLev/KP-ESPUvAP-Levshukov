@@ -17,6 +17,8 @@
 
 #define DISABLE_BUZZER              1       // Отключить зуммер
 
+#define DISABLE_REACTION            0       // Отключить реакцию на измеренные значения
+
 #define FAST_PREHEAT                1       // Уменьшение времени преднагрева датчиков для упрощения отладки
 #define FAST_SENSORS_PREHEAT_TIME   1000    // Длительность быстрого преднагрева датчиков MQ
 
@@ -75,7 +77,7 @@
 
 // CO в воздухе ()
 
-#define CO_EMERGENCY_VALUE          150     // Уровень срабатывания тревоги по угарному газу
+#define CO_EMERGENCY_VALUE          200     // Уровень срабатывания тревоги по угарному газу
 
 /* ========== Пороговые значения ========== */
 
@@ -136,11 +138,13 @@ void setup() {
 
     /* Инициализация пинов */
 
+#if DISABLE_REACTION != 1
     pinMode(GREEN_LED_PIN, OUTPUT);
     pinMode(YELLOW_LED_PIN, OUTPUT);
     pinMode(RED_LED_PIN, OUTPUT);
 #if DISABLE_BUZZER != 1
     pinMode(BUZZER_PIN, OUTPUT);
+#endif
 #endif
 
     pinMode(LIGHT_SENSOR_PIN, INPUT);
@@ -195,7 +199,9 @@ void loop() {
         measured_values = get_values();
         current_reaction = get_reaction(measured_values);
     }
+#if DISABLE_REACTION != 1
     update_indicators(current_reaction);
+#endif
 
 
     /* Логирование показателей датчиков в Serial */

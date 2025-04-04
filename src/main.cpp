@@ -45,11 +45,6 @@
 
 GyverBME280 bme;
 
-enum class colors {
-    RED,
-    YELLOW,
-    GREEN
-} color = colors::GREEN;
 
 /**
  * Значения полученные с датчиков

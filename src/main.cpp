@@ -140,9 +140,7 @@ void setup() {
 
     /* Сигнал при включении */
 
-    tone(BUZZER_PIN, 2000, 20);
-    delay(100);
-    tone(BUZZER_PIN, 2000, 20);
+    tone(BUZZER_PIN, 2000, 50);
 
     /* Ожидание нагрева датчиков */
 

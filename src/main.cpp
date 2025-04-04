@@ -3,48 +3,66 @@
 #include "GyverBME280.h"
 #include "MQUnifiedsensor.h"
 
-#define GREEN_LED_PIN 2
-#define YELLOW_LED_PIN 3
-#define RED_LED_PIN 4
-#define BUZZER_PIN 5
-#define CO_SENSOR_PIN A7
-#define GAS_SENSOR_PIN A6
-#define LIGHT_SENSOR_PIN A3
+
+/* ================= Пины ================= */
+/*                > Выходы <                */
+
+#define GREEN_LED_PIN               2       // Зелёный светодиод индикатора
+#define YELLOW_LED_PIN              3       // Жёлтый светодиод индикатора
+#define RED_LED_PIN                 4       // Красный светодиод индикатора
+
+#define BUZZER_PIN                  5       // Зуммер
+
+/*                > Входы <                 */
+
+#define CO_SENSOR_PIN               A7      // Датчик угарного газа
+#define GAS_SENSOR_PIN              A6      // Датчик горючих газов
+#define LIGHT_SENSOR_PIN            A3      // Датчик освещённости
+
+/* ================= Пины ================= */
+
 
 /* ========== Пороговые значения ========== */
 // Температура (°C)
 
-#define TEMP_LOW_CRITICAL_VALUE       18    // Критический низкий порог температуры
-#define TEMP_LOW_WARNING_VALUE        20    // Предупреждающий низкий порог температуры
-#define TEMP_HIGH_WARNING_VALUE       25    // Предупреждающий высокий порог температуры
-#define TEMP_HIGH_CRITICAL_VALUE      27    // Критический высокий порог температуры
+#define TEMP_LOW_CRITICAL_VALUE     18      // Критический низкий порог температуры
+#define TEMP_LOW_WARNING_VALUE      20      // Предупреждающий низкий порог температуры
+#define TEMP_HIGH_WARNING_VALUE     25      // Предупреждающий высокий порог температуры
+#define TEMP_HIGH_CRITICAL_VALUE    27      // Критический высокий порог температуры
 
 // Влажность (%)
 
-#define HUM_LOW_CRITICAL_VALUE        30    // Критический низкий порог влажности
-#define HUM_LOW_WARNING_VALUE         40    // Предупреждающий низкий порог влажности
-#define HUM_HIGH_WARNING_VALUE        60    // Предупреждающий высокий порог влажности
-#define HUM_HIGH_CRITICAL_VALUE       70    // Критический высокий порог влажности
+#define HUM_LOW_CRITICAL_VALUE      30      // Критический низкий порог влажности
+#define HUM_LOW_WARNING_VALUE       40      // Предупреждающий низкий порог влажности
+#define HUM_HIGH_WARNING_VALUE      60      // Предупреждающий высокий порог влажности
+#define HUM_HIGH_CRITICAL_VALUE     70      // Критический высокий порог влажности
 
 // Освещённость ()
 
-#define LIGHT_LOW_CRITICAL_VALUE      100   // Критический низкий порог освещённости
-#define LIGHT_LOW_WARNING_VALUE       200   // Предупреждающий низкий порог освещённости
-#define LIGHT_HIGH_WARNING_VALUE      800   // Предупреждающий высокий порог освещённости
-#define LIGHT_HIGH_CRITICAL_VALUE     1000  // Критический высокий порог освещённости
+#define LIGHT_LOW_CRITICAL_VALUE    100     // Критический низкий порог освещённости
+#define LIGHT_LOW_WARNING_VALUE     200     // Предупреждающий низкий порог освещённости
+#define LIGHT_HIGH_WARNING_VALUE    800     // Предупреждающий высокий порог освещённости
+#define LIGHT_HIGH_CRITICAL_VALUE   1000    // Критический высокий порог освещённости
 
 // Горючие газы в воздухе ()
 
-#define GAS_CRITICAL_VALUE            600   // Уровень срабатывания тревоги по горючим газам
+#define GAS_CRITICAL_VALUE          600     // Уровень срабатывания тревоги по горючим газам
 
 // CO в воздухе ()
 
-#define CO_EMERGENCY_VALUE            150   // Уровень срабатывания тревоги по угарному газу
+#define CO_EMERGENCY_VALUE          150     // Уровень срабатывания тревоги по угарному газу
 
 /* ========== Пороговые значения ========== */
 
+
+/* === Инициализация объектов библиотек === */
+
 GyverBME280 bme;
 
+/* === Инициализация объектов библиотек === */
+
+
+/* ========= Глобальные переменные ======== */
 
 /**
  * Значения полученные с датчиков
@@ -75,15 +93,20 @@ enum class Reaction {
     EMERGENCY_CO
 } current_reaction = Reaction::WARNING_MULTIPLE;
 
+/* ========= Глобальные переменные ======== */
+
+
+/* ========== Определение функций ========= */
+
 sensors_values get_values();
 Reaction get_reaction(sensors_values values);
 void update_indicators(Reaction reaction);
 
-void setup() {
-    Serial.begin(115200);
-    bme.begin();
+/* ========== Определение функций ========= */
 
-    Serial.println("Start!");
+void setup() {
+
+    /* Инициализация пинов */
 
     pinMode(GREEN_LED_PIN, OUTPUT);
     pinMode(YELLOW_LED_PIN, OUTPUT);
@@ -96,6 +119,16 @@ void setup() {
 
     pinMode(LED_BUILTIN, OUTPUT);
 
+    /* Функции инициализации */
+
+    Serial.begin(115200);
+    bme.begin();
+
+    // Приветственный лог
+    Serial.println("Start!");
+
+    /* Сигнал при включении */
+
     tone(BUZZER_PIN, 2000, 20);
     delay(100);
     tone(BUZZER_PIN, 2000, 20);
@@ -103,7 +136,7 @@ void setup() {
 
 void loop() {
 
-    // Чтение данных и реакция
+    /* Чтение данных и реакция */
 
     static uint32_t read_sensors_tmr;
     if (millis() - read_sensors_tmr >= 1000) {
@@ -113,6 +146,8 @@ void loop() {
     }
     update_indicators(current_reaction);
 
+
+    /* Логирование показателей датчиков в Serial */
 
     static unsigned long serial_log_tmr;
     if (millis() - serial_log_tmr >= 1000) {
@@ -167,6 +202,8 @@ Reaction get_reaction(sensors_values values) {
         } critical;
     } flags{};
 
+    // Сверка показателей
+
     if (values.CO >= CO_EMERGENCY_VALUE)
         flags.critical.CO = true;
     if (values.gas >= GAS_CRITICAL_VALUE)
@@ -183,6 +220,8 @@ Reaction get_reaction(sensors_values values) {
         flags.warning.hum = true;
     if (values.light < LIGHT_LOW_WARNING_VALUE or values.light > LIGHT_HIGH_WARNING_VALUE)
         flags.warning.light = true;
+
+    // Возврат реакции
 
     if (flags.critical.CO)
         return Reaction::EMERGENCY_CO;

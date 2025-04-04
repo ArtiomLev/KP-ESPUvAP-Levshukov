@@ -115,8 +115,6 @@ void setup() {
     pinMode(RED_LED_PIN, OUTPUT);
     pinMode(BUZZER_PIN, OUTPUT);
 
-    pinMode(CO_SENSOR_PIN, INPUT);
-    pinMode(GAS_SENSOR_PIN, INPUT);
     pinMode(LIGHT_SENSOR_PIN, INPUT);
 
     pinMode(LED_BUILTIN, OUTPUT);
@@ -125,6 +123,17 @@ void setup() {
 
     Serial.begin(115200);
     bme.begin();
+
+    // Инициализация датчика MQ-4
+    MQ5.setRegressionMethod(1);
+    MQ5.setA(1163.8);
+    MQ5.setB(-3.874);
+    MQ5.init();
+    // Инициализация датчика MQ-7
+    MQ7.setRegressionMethod(1);
+    MQ7.setA(99.042);
+    MQ7.setB(-1.518);
+    MQ7.init();
 
     // Приветственный лог
     Serial.println("Start!");

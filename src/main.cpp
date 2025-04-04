@@ -172,9 +172,9 @@ void setup() {
     MQ7.init();
 
     /* Сигнал при включении */
-
+#if DISABLE_BUZZER != 1
     tone(BUZZER_PIN, 2000, 50);
-
+#endif
     /* Ожидание нагрева датчиков */
 
     uint32_t sensors_preheat_start_time = millis();
@@ -186,7 +186,9 @@ void setup() {
     digitalWrite(GREEN_LED_PIN, 0);
     digitalWrite(YELLOW_LED_PIN, 0);
     digitalWrite(RED_LED_PIN, 0);
+#if DISABLE_BUZZER != 1
     tone(BUZZER_PIN, 2000, 200);
+#endif
 }
 
 void loop() {
@@ -349,21 +351,25 @@ void update_indicators(Reaction reaction) {
             digitalWrite(GREEN_LED_PIN, 0);
             digitalWrite(YELLOW_LED_PIN, 0);
             digitalWrite(RED_LED_PIN, 1);
+#if DISABLE_BUZZER != 1
             if (millis() % 1000 < 500) {
                 tone(BUZZER_PIN, 1500);
             } else {
                 noTone(BUZZER_PIN);
             }
+#endif
             break;
         case Reaction::EMERGENCY_CO:
             digitalWrite(GREEN_LED_PIN, 0);
             digitalWrite(YELLOW_LED_PIN, 0);
             digitalWrite(RED_LED_PIN, millis() % 1000 < 500);
+#if DISABLE_BUZZER != 1
             if (millis() % 400 < 200) {
                 tone(BUZZER_PIN, 1500);
             } else {
                 tone(BUZZER_PIN, 2000);
             }
+#endif
             break;
     }
 }

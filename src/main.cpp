@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "Wire.h"
 #include "GyverBME280.h"
 #include "MQUnifiedsensor.h"
 

@@ -143,6 +143,19 @@ void setup() {
     tone(BUZZER_PIN, 2000, 20);
     delay(100);
     tone(BUZZER_PIN, 2000, 20);
+
+    /* Ожидание нагрева датчиков */
+
+    uint32_t sensors_preheat_start_time = millis();
+    while (millis() - sensors_preheat_start_time < 90000) {
+        digitalWrite(GREEN_LED_PIN, (millis() % 900 > 0) and (millis() % 900 < 300));
+        digitalWrite(YELLOW_LED_PIN, (millis() % 900 > 300) and (millis() % 900 < 600));
+        digitalWrite(RED_LED_PIN, (millis() % 900 > 600) and (millis() % 900 < 900));
+    }
+    digitalWrite(GREEN_LED_PIN, 0);
+    digitalWrite(YELLOW_LED_PIN, 0);
+    digitalWrite(RED_LED_PIN, 0);
+    tone(BUZZER_PIN, 2000, 200);
 }
 
 void loop() {

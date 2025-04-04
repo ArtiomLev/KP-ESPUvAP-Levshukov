@@ -125,7 +125,7 @@ void setup() {
     Serial.println("Start!\n");
     bme.begin();
 
-    // Инициализация датчика MQ-4
+    // Инициализация датчика MQ-5
     MQ5.setRegressionMethod(1);
     MQ5.setA(1163.8);
     MQ5.setB(-3.874);

@@ -250,7 +250,7 @@ Reaction get_reaction(sensors_values values) {
  * @param Reaction reaction
  */
 void update_indicators(Reaction reaction) {
-    switch (current_reaction) {
+    switch (reaction) {
         case Reaction::NORMAL:
             digitalWrite(GREEN_LED_PIN, 1);
             digitalWrite(YELLOW_LED_PIN, 0);

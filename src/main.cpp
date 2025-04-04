@@ -2,6 +2,32 @@
 #include "GyverBME280.h"
 #include "MQUnifiedsensor.h"
 
+/* =============== Настройки ============== */
+
+#define SENSORS_PREHEAT_TIME        90000   // Длительность нагрева датчиков MQ
+
+#define DEBUG                       1       // Отладка
+
+#if DEBUG == 1
+
+#define SERIAL_LOG_OUTPUT           1       // Вывод логов в Serial
+#define SERIAL_LOG_PERIOD           1000    // Период отправки логов в Serial
+#define LOG_MEASURED_VALUES         1       // Логировать измеренные значения
+#define LOG_CURRENT_REACTION        1       // Логировать текущую реакцию
+
+#define DISABLE_BUZZER              1       // Отключить зуммер
+
+#define FAST_PREHEAT                1       // Уменьшение времени преднагрева датчиков для упрощения отладки
+#define FAST_SENSORS_PREHEAT_TIME   1000    // Длительность быстрого преднагрева датчиков MQ
+
+#if FAST_PREHEAT == 1
+#undef SENSORS_PREHEAT_TIME
+#define SENSORS_PREHEAT_TIME FAST_SENSORS_PREHEAT_TIME
+#endif
+#endif
+
+/* =============== Настройки ============== */
+
 
 /* ================= Пины ================= */
 /*                > Выходы <                */
@@ -113,7 +139,9 @@ void setup() {
     pinMode(GREEN_LED_PIN, OUTPUT);
     pinMode(YELLOW_LED_PIN, OUTPUT);
     pinMode(RED_LED_PIN, OUTPUT);
+#if DISABLE_BUZZER != 1
     pinMode(BUZZER_PIN, OUTPUT);
+#endif
 
     pinMode(LIGHT_SENSOR_PIN, INPUT);
 
@@ -121,8 +149,11 @@ void setup() {
 
     /* Функции инициализации */
 
+#if SERIAL_LOG_OUTPUT == 1
     Serial.begin(115200);
     Serial.println("Start!\n");
+#endif
+
     bme.begin();
 
     // Инициализация датчика MQ-5
@@ -143,7 +174,7 @@ void setup() {
     /* Ожидание нагрева датчиков */
 
     uint32_t sensors_preheat_start_time = millis();
-    while (millis() - sensors_preheat_start_time < 90000) {
+    while (millis() - sensors_preheat_start_time < SENSORS_PREHEAT_TIME) {
         digitalWrite(GREEN_LED_PIN, (millis() % 900 > 0) and (millis() % 900 < 300));
         digitalWrite(YELLOW_LED_PIN, (millis() % 900 > 300) and (millis() % 900 < 600));
         digitalWrite(RED_LED_PIN, (millis() % 900 > 600) and (millis() % 900 < 900));
@@ -168,12 +199,18 @@ void loop() {
 
 
     /* Логирование показателей датчиков в Serial */
-
+#if SERIAL_LOG_OUTPUT == 1
     static unsigned long serial_log_tmr;
-    if (millis() - serial_log_tmr >= 1000) {
+    if (millis() - serial_log_tmr >= SERIAL_LOG_PERIOD) {
         serial_log_tmr = millis();
+#if LOG_MEASURED_VALUES == 1
         sensors_serial_log(measured_values);
+#endif
+#if LOG_CURRENT_REACTION == 1
+
+#endif
     }
+#endif
 
 }
 

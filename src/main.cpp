@@ -15,7 +15,7 @@
 #define LOG_MEASURED_VALUES         1       // Логировать измеренные значения
 #define LOG_CURRENT_REACTION        1       // Логировать текущую реакцию
 
-#define DISABLE_BUZZER              1       // Отключить зуммер
+#define DISABLE_BUZZER              0       // Отключить зуммер
 
 #define DISABLE_REACTION            0       // Отключить реакцию на измеренные значения
 

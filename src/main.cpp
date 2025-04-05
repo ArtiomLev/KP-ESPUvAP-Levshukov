@@ -239,9 +239,7 @@ void loop() {
     static unsigned long serial_log_tmr;
     if (millis() - serial_log_tmr >= SERIAL_LOG_PERIOD) {
         serial_log_tmr = millis();
-#if LOG_MEASURED_VALUES == 1
-        sensors_serial_log(measured_values);
-#endif
+
 #if LOG_CURRENT_REACTION == 1
 
 #endif
@@ -290,6 +288,11 @@ sensors_values get_values() {
     MQ7.update();
     values.CO = MQ7.readSensor();
     values.raw.CO = analogRead(CO_SENSOR_PIN);
+
+    // Логирование измеренных значений
+#if LOG_MEASURED_VALUES == 1 && SERIAL_LOG_OUTPUT == 1
+    sensors_serial_log(values);
+#endif
     return values;
 }
 

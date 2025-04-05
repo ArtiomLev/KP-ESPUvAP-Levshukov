@@ -234,6 +234,9 @@ void loop() {
         reaction_log(current_reaction);
 #endif
     }
+
+    /* Управление индикатором и зуммером */
+
 #if DISABLE_REACTION != 1
     update_indicators(current_reaction);
 #endif

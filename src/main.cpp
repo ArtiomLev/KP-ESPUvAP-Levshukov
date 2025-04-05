@@ -97,11 +97,16 @@ MQUnifiedsensor MQ7("Arduino Nano", 5, 10, CO_SENSOR_PIN, "MQ-7");
  * Значения полученные с датчиков
  */
 struct sensors_values {
-    float temp; // Температура
-    float hum; // Влажность
-    float light; // Освещённость
-    float gas; // Горючие газы
-    float CO; // Угарный газ
+    float temp;     // Температура
+    float hum;      // Влажность
+    float light;    // Освещённость
+    float gas;      // Горючие газы
+    float CO;       // Угарный газ
+    struct {
+        //float light;
+        float gas;
+        float CO;
+    } raw;
 } measured_values{};
 
 /**
@@ -251,13 +256,15 @@ void loop() {
  */
 void sensors_serial_log(sensors_values values) {
         Serial.println("==============================");
-        Serial.print("Temperature: "); Serial.println(values.temp);
-        Serial.print("Humidity: "); Serial.println(values.hum);
+        Serial.print("Temperature:\t"); Serial.println(values.temp);
+        Serial.print("Humidity:\t"); Serial.println(values.hum);
         Serial.println("==============================");
-        Serial.print("CO: "); Serial.println(values.CO);
-        Serial.print("GAS: ");  Serial.println(values.gas);
+        Serial.print("Raw CO:\t"); Serial.println(values.raw.CO);
+        Serial.print("CO:\t"); Serial.println(values.CO);
+        Serial.print("Raw GAS:\t");  Serial.println(values.raw.gas);
+        Serial.print("GAS:\t");  Serial.println(values.gas);
         Serial.println("==============================");
-        Serial.print("Light: "); Serial.println(values.light);
+        Serial.print("Light:\t"); Serial.println(values.light);
         Serial.println("==============================");
         Serial.println("");
 }
@@ -271,8 +278,12 @@ sensors_values get_values() {
     values.temp = bme.readTemperature();
     values.hum = bme.readHumidity();
     values.light = analogRead(LIGHT_SENSOR_PIN);
-    values.gas = analogRead(GAS_SENSOR_PIN);
-    values.CO = analogRead(CO_SENSOR_PIN);
+    MQ5.update();
+    values.gas = MQ5.readSensor();
+    values.raw.gas = analogRead(GAS_SENSOR_PIN);
+    MQ7.update();
+    values.CO = MQ7.readSensor();
+    values.raw.CO = analogRead(CO_SENSOR_PIN);
     return values;
 }
 

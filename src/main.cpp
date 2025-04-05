@@ -8,7 +8,7 @@
 
 #define MEASURE_PERIOD              1000    // Периодичность измерений
 
-#define DEBUG                       1       // Отладка
+#define DEBUG                       0       // Отладка
 
 #if DEBUG == 1
 

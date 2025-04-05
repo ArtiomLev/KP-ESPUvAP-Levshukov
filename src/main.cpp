@@ -136,6 +136,7 @@ sensors_values get_values();
 Reaction get_reaction(sensors_values values);
 void update_indicators(Reaction reaction);
 void sensors_serial_log(sensors_values values);
+void reaction_log(Reaction reaction);
 
 /* ========== Определение функций ========= */
 
@@ -228,23 +229,15 @@ void loop() {
         read_sensors_tmr = millis();
         measured_values = get_values();
         current_reaction = get_reaction(measured_values);
+#if LOG_CURRENT_REACTION == 1 && SERIAL_LOG_OUTPUT == 1
+        reaction_log(current_reaction);
+#endif
     }
 #if DISABLE_REACTION != 1
     update_indicators(current_reaction);
 #endif
 
 
-    /* Логирование показателей датчиков в Serial */
-#if SERIAL_LOG_OUTPUT == 1
-    static unsigned long serial_log_tmr;
-    if (millis() - serial_log_tmr >= SERIAL_LOG_PERIOD) {
-        serial_log_tmr = millis();
-
-#if LOG_CURRENT_REACTION == 1
-
-#endif
-    }
-#endif
 
 }
 
@@ -264,6 +257,38 @@ void sensors_serial_log(sensors_values values) {
     Serial.print("GAS:\t\t");  Serial.println(values.gas);
     Serial.println("==============================");
     Serial.print("Light:\t\t"); Serial.println(values.light);
+    Serial.println("==============================");
+    Serial.println("");
+}
+
+/**
+ * Вывод в Serial текущей реакции системы
+ * @param reaction
+ */
+void reaction_log(Reaction reaction) {
+    Serial.println("");
+    Serial.println("==============================");
+    Serial.print("Current reaction:\t");
+    switch (reaction) {
+        case Reaction::NORMAL:
+            Serial.println("Normal (All OK)");
+            break;
+        case Reaction::WARNING_SINGLE:
+            Serial.println("Warning!");
+            break;
+        case Reaction::WARNING_MULTIPLE:
+            Serial.println("Multiple warning!");
+            break;
+        case Reaction::CRITICAL_TEMP_HUMID:
+            Serial.println("Critical temperature or humidity deviation!");
+            break;
+        case Reaction::CRITICAL_GAS:
+            Serial.println("Critical gas concentration!");
+            break;
+        case Reaction::EMERGENCY_CO:
+            Serial.println("Critical CO concentration!");
+            break;
+    }
     Serial.println("==============================");
     Serial.println("");
 }

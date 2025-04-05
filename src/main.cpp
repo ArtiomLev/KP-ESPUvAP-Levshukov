@@ -275,12 +275,18 @@ void sensors_serial_log(sensors_values values) {
  */
 sensors_values get_values() {
     sensors_values values{};
+
+    // Получение температуры и влажности
     values.temp = bme.readTemperature();
     values.hum = bme.readHumidity();
     values.light = analogRead(LIGHT_SENSOR_PIN);
+
+    // Получение концентрации горючих газов
     MQ5.update();
     values.gas = MQ5.readSensor();
     values.raw.gas = analogRead(GAS_SENSOR_PIN);
+
+    // Получение концентрации угарного газа
     MQ7.update();
     values.CO = MQ7.readSensor();
     values.raw.CO = analogRead(CO_SENSOR_PIN);

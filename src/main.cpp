@@ -11,7 +11,6 @@
 #if DEBUG == 1
 
 #define SERIAL_LOG_OUTPUT           1       // Вывод логов в Serial
-#define SERIAL_LOG_PERIOD           1000    // Период отправки логов в Serial
 #define LOG_MEASURED_VALUES         1       // Логировать измеренные значения
 #define LOG_CURRENT_REACTION        1       // Логировать текущую реакцию
 

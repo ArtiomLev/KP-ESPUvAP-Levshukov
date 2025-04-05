@@ -52,32 +52,32 @@
 /* ========== Пороговые значения ========== */
 // Температура (°C)
 
-#define TEMP_LOW_CRITICAL_VALUE     18      // Критический низкий порог температуры
-#define TEMP_LOW_WARNING_VALUE      20      // Предупреждающий низкий порог температуры
-#define TEMP_HIGH_WARNING_VALUE     25      // Предупреждающий высокий порог температуры
-#define TEMP_HIGH_CRITICAL_VALUE    27      // Критический высокий порог температуры
+#define TEMP_LOW_CRITICAL_VALUE     17      // Критический низкий порог температуры
+#define TEMP_LOW_WARNING_VALUE      19      // Предупреждающий низкий порог температуры
+#define TEMP_HIGH_WARNING_VALUE     26      // Предупреждающий высокий порог температуры
+#define TEMP_HIGH_CRITICAL_VALUE    29      // Критический высокий порог температуры
 
 // Влажность (%)
 
-#define HUM_LOW_CRITICAL_VALUE      30      // Критический низкий порог влажности
-#define HUM_LOW_WARNING_VALUE       40      // Предупреждающий низкий порог влажности
-#define HUM_HIGH_WARNING_VALUE      60      // Предупреждающий высокий порог влажности
-#define HUM_HIGH_CRITICAL_VALUE     70      // Критический высокий порог влажности
+#define HUM_LOW_CRITICAL_VALUE      25      // Критический низкий порог влажности
+#define HUM_LOW_WARNING_VALUE       30      // Предупреждающий низкий порог влажности
+#define HUM_HIGH_WARNING_VALUE      55      // Предупреждающий высокий порог влажности
+#define HUM_HIGH_CRITICAL_VALUE     60      // Критический высокий порог влажности
 
-// Освещённость ()
+// Освещённость (лк)
 
-#define LIGHT_LOW_CRITICAL_VALUE    100     // Критический низкий порог освещённости
-#define LIGHT_LOW_WARNING_VALUE     200     // Предупреждающий низкий порог освещённости
-#define LIGHT_HIGH_WARNING_VALUE    800     // Предупреждающий высокий порог освещённости
-#define LIGHT_HIGH_CRITICAL_VALUE   1000    // Критический высокий порог освещённости
+#define LIGHT_LOW_CRITICAL_VALUE    200     // Критический низкий порог освещённости
+#define LIGHT_LOW_WARNING_VALUE     290     // Предупреждающий низкий порог освещённости
+#define LIGHT_HIGH_WARNING_VALUE    600     // Предупреждающий высокий порог освещённости
+#define LIGHT_HIGH_CRITICAL_VALUE   900     // Критический высокий порог освещённости
 
-// Горючие газы в воздухе ()
+// Горючие газы в воздухе (ppm)
 
-#define GAS_CRITICAL_VALUE          600     // Уровень срабатывания тревоги по горючим газам
+#define GAS_CRITICAL_VALUE          20000     // Уровень срабатывания тревоги по горючим газам
 
-// CO в воздухе ()
+// CO в воздухе (ppm)
 
-#define CO_EMERGENCY_VALUE          200     // Уровень срабатывания тревоги по угарному газу
+#define CO_EMERGENCY_VALUE          7000     // Уровень срабатывания тревоги по угарному газу
 
 /* ========== Пороговые значения ========== */
 

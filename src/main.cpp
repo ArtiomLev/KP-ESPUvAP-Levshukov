@@ -6,6 +6,8 @@
 
 #define SENSORS_PREHEAT_TIME        90000   // Длительность нагрева датчиков MQ
 
+#define MEASURE_PERIOD              1000    // Периодичность измерений
+
 #define DEBUG                       1       // Отладка
 
 #if DEBUG == 1
@@ -224,7 +226,7 @@ void loop() {
     /* Чтение данных и реакция */
 
     static uint32_t read_sensors_tmr;
-    if (millis() - read_sensors_tmr >= 1000) {
+    if (millis() - read_sensors_tmr >= MEASURE_PERIOD) {
         read_sensors_tmr = millis();
         measured_values = get_values();
         current_reaction = get_reaction(measured_values);
@@ -235,8 +237,6 @@ void loop() {
 #if DISABLE_REACTION != 1
     update_indicators(current_reaction);
 #endif
-
-
 
 }
 

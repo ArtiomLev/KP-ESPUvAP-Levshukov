@@ -189,6 +189,29 @@ void setup() {
 #if DISABLE_BUZZER != 1
     tone(BUZZER_PIN, 2000, 200);
 #endif
+
+    /* Калибровка датчиков */
+
+    float calcR0;
+
+    // Калибровка MQ-5
+
+    calcR0 = 0;
+    for (uint8_t i = 1 ; i <= 10 ; i++ ) {
+        MQ5.update();
+        calcR0 += MQ5.calibrate(6.5);
+    }
+    MQ5.setR0(calcR0/10);
+
+    // Калибровка MQ-7
+
+    calcR0 = 0;
+    for (uint8_t i = 1 ; i <= 10 ; i++ ) {
+        MQ7.update();
+        calcR0 += MQ7.calibrate(6.5);
+    }
+    MQ7.setR0(calcR0/10);
+
 }
 
 void loop() {

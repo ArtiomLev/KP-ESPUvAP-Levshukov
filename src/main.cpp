@@ -256,14 +256,14 @@ void sensors_serial_log(sensors_values values) {
     Serial.println("");
     Serial.println("==============================");
     Serial.print("Temperature:\t"); Serial.println(values.temp);
-    Serial.print("Humidity:\t"); Serial.println(values.hum);
+    Serial.print("Humidity:\t\t"); Serial.println(values.hum);
     Serial.println("==============================");
-    Serial.print("Raw CO:\t"); Serial.println(values.raw.CO);
-    Serial.print("CO:\t"); Serial.println(values.CO);
-    Serial.print("Raw GAS:\t");  Serial.println(values.raw.gas);
-    Serial.print("GAS:\t");  Serial.println(values.gas);
+    Serial.print("Raw CO:\t\t"); Serial.println(values.raw.CO);
+    Serial.print("CO:\t\t"); Serial.println(values.CO);
+    Serial.print("Raw GAS:\t\t");  Serial.println(values.raw.gas);
+    Serial.print("GAS:\t\t");  Serial.println(values.gas);
     Serial.println("==============================");
-    Serial.print("Light:\t"); Serial.println(values.light);
+    Serial.print("Light:\t\t"); Serial.println(values.light);
     Serial.println("==============================");
     Serial.println("");
 }

@@ -253,6 +253,7 @@ void loop() {
  * @param values
  */
 void sensors_serial_log(sensors_values values) {
+        Serial.println("");
         Serial.println("==============================");
         Serial.print("Temperature:\t"); Serial.println(values.temp);
         Serial.print("Humidity:\t"); Serial.println(values.hum);
